@@ -14,23 +14,15 @@ goog.require('nx.EventBus');
 nx.Index = function () {
     var ctx = nx.Ctx.getInstance();
 
-    var contest = null;
+    var conf = {
+        "url": "/img/big_img_16x9.jpg",
+        "cols": 5760,
+        "rows": 3240
+    };
 
-    if (!contest) { // mock it
-
-        var mockContest = {
-            "url": "/img/big_img.jpg",
-            "cols": 2592,
-            "rows": 1458
-            // "cols": 5760,
-            // "rows": 3840
-        };
-        contest = mockContest;
-    }
-
-    nx.Index.CANVAS_PREF.imageUrl = contest['url'];
-    nx.Index.CANVAS_PREF.imageFull.width = contest['cols'];
-    nx.Index.CANVAS_PREF.imageFull.height = contest['rows'];
+    nx.Index.CANVAS_PREF.imageUrl = conf['url'];
+    nx.Index.CANVAS_PREF.imageFull.width = conf['cols'];
+    nx.Index.CANVAS_PREF.imageFull.height = conf['rows'];
     nx.EventBus.handleEvents(ctx);
 
     var img = new Image();
@@ -48,8 +40,6 @@ nx.Index.CANVAS_PREF = {
     imageSmall: null,
     imageUrl: null,
     aspectRatio: 16 / 9
-    //imageFull:{ width:2208, height:1668 },
-    //imageFull:{ width:2592, height:1458 },// 1728x1728
 };
 
 nx.Index.setPrefsRatio = function (ratio) {
@@ -62,7 +52,6 @@ nx.Index.setPrefsRatio = function (ratio) {
     nx.Index.CANVAS_PREF.ratio = imgW / pageWidth;
     nx.Index.CANVAS_PREF.imageSmall = {width: pageWidth, height: aspectWeight};
 };
-/////////////////////////
 
 jq = jQuery.noConflict();
 
