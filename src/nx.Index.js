@@ -15,7 +15,7 @@ nx.Index = function () {
     var ctx = nx.Ctx.getInstance();
 
     var conf = {
-        "url": "/img/big_img_16x9.jpg",
+        "url": "img/big_img_16x9.jpg",
         "cols": 5760,
         "rows": 3240
     };

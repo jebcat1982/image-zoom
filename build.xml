@@ -70,16 +70,16 @@
             <arg line="-o ${build.web}/index.html ${build.web}/index.html"/>
         </java>
 
-        <replace file="${build.web}/index.html" value="">
-            <replacetoken><![CDATA[<script src='/js/jquery.min.js'></script>]]></replacetoken>
-        </replace>
+        <!--<replace file="${build.web}/index.html" value="">-->
+            <!--<replacetoken><![CDATA[<script src='/js/jquery.min.js'></script>]]></replacetoken>-->
+        <!--</replace>-->
         <loadfile property="cd026" srcfile="${build.web}/js/jquery.event.mousestop.min.js"></loadfile>
         <replace file="${build.web}/index.html" value="&lt;script&gt;${cd026}&lt;/script&gt;">
             <replacetoken><![CDATA[<script src='/js/jquery.event.mousestop.min.js'></script>]]></replacetoken>
         </replace>
-        <loadfile property="cd027" srcfile="${build.web}/js/jquery.transit.min.js"></loadfile>
+        <loadfile property="cd027" srcfile="${build.web}/js/jquery.min.js"></loadfile>
         <replace file="${build.web}/index.html" value="&lt;script&gt;${cd027}&lt;/script&gt;">
-            <replacetoken><![CDATA[<script src='/js/jquery.transit.min.js'></script>]]></replacetoken>
+            <replacetoken><![CDATA[<script src='/js/jquery.min.js'></script>]]></replacetoken>
         </replace>
 
         <loadfile property="cd011" srcfile="${compiled.js.file}"></loadfile>
