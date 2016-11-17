@@ -8,11 +8,13 @@ http://nextinterfaces.com/projects/image-zoom
 ![alt tag](http://nextinterfaces.com/i/image-zoom.jpg)
 
 ### Run dev mode
+Run your favorite web server at ```/web``` level
 ```
-// Run your favorite web server at /web level such as python or similar
 root/web >>> python -m SimpleHTTPServer 8000
+```
 
-// Run live compilation of Google Closure Library
+Run live compilation of Google Closure Library
+```
 root/ >>> ./plovr.sh
 ```
 Open the app at http://localhost:8000/
