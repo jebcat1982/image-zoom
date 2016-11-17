@@ -1,17 +1,11 @@
 Image Zoom
 ====
+Image Zoom is a JavaScript project featuring image zoom (magnifier) functionality. Libraries used are [Google Closure Library](https://developers.google.com/closure/library/) and jQuery.
 
-Image Zoom is a JavaScript project featuring image zoom (magnifier) functionality
-
-### Screenshot
-http://nextinterfaces.com/screenshot
+### Live Demo
+http://nextinterfaces.com/projects/image-zoom
 
 ![alt tag](http://nextinterfaces.com/i/image-zoom.jpg)
-
-### Dependencies
-* Build using JavaScript
-* [Google Closure Library](https://developers.google.com/closure/library/)
-
 
 ### Run dev mode
 ```
