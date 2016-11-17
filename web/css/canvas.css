@@ -1,0 +1,137 @@
+/* ============= @media ============= */
+@media all {
+    html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, abbr, address, cite, code, del, dfn, em, img, ins, kbd, q, samp, small, strong, sub, sup, var, b, i, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary, svg, time, mark, audio, video {
+        background: transparent;
+        border: 0;
+        font-size: 100%;
+        margin: 0;
+        padding: 0;
+        outline: 0;
+        vertical-align: baseline;
+    }
+}
+
+/* ============= @media ============= */
+@media screen {
+
+    #canvas {
+        float: left;
+    }
+
+    #canvas #xyVertical {
+        background-color: RGBA(0, 0, 0, 0);
+        width: 1px;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin-left: -1px;
+        border-right: 1px solid RGBA(255, 255, 255, .2);
+    }
+
+    #canvas #xyHorizontal {
+        background-color: RGBA(0, 0, 0, 0);
+        width: 100%;
+        height: 1px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin-bottom: -1px;
+        border-bottom: 1px solid RGBA(255, 255, 255, .2);
+    }
+
+    /*#canvas #loupeHandle {*/
+        /*width: 31px;*/
+        /*height: 31px;*/
+        /*position: absolute;*/
+        /*top: 0;*/
+        /*left: 0;*/
+        /*background-image: url(../img/target05small2.png);*/
+        /*background-size: 31px;*/
+        /*display: none;*/
+        /*margin: -15px 0 0 -15px;*/
+    /*}*/
+
+    #canvasOverlay {
+        border: 0px solid green;
+        position: absolute;
+        background-color: RGBA(255, 255, 255, 0);
+        cursor: url(../img/glass.png) 50 50, auto;
+    }
+
+    #loupe {
+        position: absolute;
+        display: none;
+        cursor: url(../img/glass.png) 50 50, auto;
+
+        -moz-box-shadow: 0 0 20px #000, 0 0 10px #fff inset;
+        -webkit-box-shadow: 0 0 5px #000;
+        box-shadow: 0 0 20px #000, 0 0 10px #fff inset;
+
+        -moz-border-radius: 141px;
+        -webkit-border-radius: 141px;
+        border-radius: 141px;
+        overflow: hidden;
+    }
+
+    #loupe {
+        border: 2px solid RGBA(255, 255, 255, 1);
+        border-radius: 141px;
+    }
+
+    #targetBtn {
+        border: 0px solid #000;
+        background-color: RGBA(0, 0, 0, .2);
+        background-image: url(../img/target05on.png);
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        background-size: 100px;
+        margin: -50px;
+        opacity: 0;
+        border-radius: 100px;
+    }
+
+    #loupe #canvasFull {
+        border: 0px solid lawngreen;
+        top: 0;
+        left: 0;
+        position: absolute;
+        margin: 0 0 0 0;
+        background-repeat: no-repeat;
+        background-size: 100%;
+    }
+
+    #coordinates {
+        background: RGBA(0, 0, 0, .3);
+        margin: 0px;
+        padding: 5px 5px;
+        font-size: 12px;
+        font-weight: bold;
+        color: RGBA(255, 255, 255, .8);
+        text-align: left;
+        position: absolute;
+        width: 80px;
+        font-family: Arial, sans-serif;
+        white-space: nowrap;
+    }
+
+    #coordinates span {
+        font-weight: normal;
+        color: #999;
+        font-size: 12px;
+    }
+
+    #loupeControl {
+        top: 0;
+        border: 0px solid red;
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 30px;
+        height: 30px;
+        margin-left: 65px;
+        display: none;
+        opacity: 0;
+    }
+}

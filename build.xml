@@ -1,0 +1,183 @@
+<?xml version="1.0"?>
+<project basedir="." default="dist" name="ImageZom">
+
+    <property name="build.root.dir" value="build"/>
+    <property name="build.web" value="build/web"/>
+    <property name="build.src" value="build/src"/>
+    <property name="build.src.ext" value="build/src-ext"/>
+    <property name="build.dist" value="build/dist"/>
+    <property name="build.externs" value="build/externs"/>
+    <property name="closure-library.dir" value="lib/closure-library"/>
+    <property name="closure-templates.dir" value="lib/closure-templates"/>
+    <property name="lib.dir" value="lib"/>
+    <property name="compiled.js.file" value="build/web/image.zoom.min.js"/>
+
+    <!-- ===================================================================
+           target: init
+   ==================================================================== -->
+    <target name="init" depends="clean, prepare">
+
+        <copy includeemptydirs="false" todir="${build.src}">
+            <fileset dir="src">
+                <exclude name="**/*.zip"/>
+                <exclude name="**/*.sh"/>
+            </fileset>
+        </copy>
+        <copy includeemptydirs="false" todir="${build.web}">
+            <fileset dir="web">
+                <exclude name="**/WEB-INF/**"/>
+                <exclude name="**/stub/**"/>
+                <exclude name="**/ads/**"/>
+            </fileset>
+        </copy>
+
+    </target>
+
+
+    <!-- ===================================================================
+             target: clean
+     ==================================================================== -->
+    <target name="clean">
+        <delete dir="web/build"/>
+        <delete dir="web/closure-library"/>
+        <delete dir="${build.root.dir}"/>
+    </target>
+
+    <!-- ===================================================================
+             target: prepare
+     ==================================================================== -->
+    <target name="prepare" description="creates build directories">
+        <mkdir dir="${build.web}"/>
+        <mkdir dir="${build.src}"/>
+        <mkdir dir="${build.dist}"/>
+        <mkdir dir="${build.externs}"/>
+    </target>
+
+
+    <!-- ===================================================================
+           target: inject-canvas
+   ==================================================================== -->
+    <target name="inject-canvas" description="inject js and css into html file" depends="compile-canvas">
+        <echo>inject-canvas</echo>
+
+        <loadfile property="cd012" srcfile="${build.web}/css/canvas.css"></loadfile>
+        <replace file="${build.web}/index.html" value="&lt;style&gt;${cd012}&lt;/style&gt;">
+            <replacetoken><![CDATA[<link href='/css/canvas.css' rel='stylesheet'>]]></replacetoken>
+        </replace>
+
+        <java jar="${lib.dir}/htmlcompressor-1.5.3.jar" fork='true'>
+            <arg line="--compress-css"/>
+            <arg line="-o ${build.web}/index.html ${build.web}/index.html"/>
+        </java>
+
+        <replace file="${build.web}/index.html" value="">
+            <replacetoken><![CDATA[<script src='/js/jquery.min.js'></script>]]></replacetoken>
+        </replace>
+        <loadfile property="cd026" srcfile="${build.web}/js/jquery.event.mousestop.min.js"></loadfile>
+        <replace file="${build.web}/index.html" value="&lt;script&gt;${cd026}&lt;/script&gt;">
+            <replacetoken><![CDATA[<script src='/js/jquery.event.mousestop.min.js'></script>]]></replacetoken>
+        </replace>
+        <loadfile property="cd027" srcfile="${build.web}/js/jquery.transit.min.js"></loadfile>
+        <replace file="${build.web}/index.html" value="&lt;script&gt;${cd027}&lt;/script&gt;">
+            <replacetoken><![CDATA[<script src='/js/jquery.transit.min.js'></script>]]></replacetoken>
+        </replace>
+
+        <loadfile property="cd011" srcfile="${compiled.js.file}"></loadfile>
+        <replace file="${build.web}/index.html" value="&lt;script&gt;${cd011}&lt;/script&gt;">
+            <replacetoken><![CDATA[<script src='http://localhost:9810/compile?id=canvas'></script>]]></replacetoken>
+        </replace>
+
+    </target>
+
+
+    <!-- ===================================================================
+           target: Dependency print
+   ==================================================================== -->
+    <target name="dep" description="python dep tree" depends="init">
+        <exec executable="python"
+              failonerror="true"
+              logError="true"
+                >
+            <arg value="${closure-library.dir}/closure/bin/build/closurebuilder.py"/>
+            <!-- Double-quote file arguments in case they contain spaces. -->
+            <arg line='--root "${closure-library.dir}"'/>
+            <arg line='--root "${closure-templates.dir}"'/>
+            <arg line='--root "${build.src}"'/>
+            <arg line='--namespace "nx.Index"'/>
+        </exec>
+    </target>
+
+    <!-- ===================================================================
+           target: NSC download for externs
+   ==================================================================== -->
+    <target name="externs.download" description="ext JS download" depends="prepare">
+        <!--<get src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"-->
+        <!--dest="${build.externs}/jquery.js"-->
+        <!--verbose="true"/>-->
+        <!--<get src="http://connect.facebook.net/en_US/all.js"-->
+        <!--dest="${build.externs}/facebook_all.js"-->
+        <!--verbose="true"/>-->
+        <copy file="${build.web}/js/jquery.min.js" tofile="${build.externs}/jquery.js"/>
+    </target>
+
+    <!-- ===================================================================
+           target: Closure Compile
+   ==================================================================== -->
+    <target name="compile-canvas" description="python closure compile" depends="dep, externs.download">
+        <exec executable="python"
+              failonerror="true"
+              logError="true"
+              output="${compiled.js.file}"
+                >
+            <arg value="${closure-library.dir}/closure/bin/build/closurebuilder.py"/>
+            <arg line='--root "${closure-library.dir}"'/>
+            <arg line='--root "${closure-templates.dir}"'/>
+            <arg line='--root "${build.src}"'/>
+            <arg line='--namespace "nx.Index"'/>
+            <arg line='--output_mode compiled'/>
+            <arg line='--compiler_jar "${lib.dir}/compiler.jar"'/>
+            <!-- WHITESPACE_ONLY, SIMPLE_OPTIMIZATIONS, ADVANCED_OPTIMIZATIONS"' /> -->
+            <!--
+            <arg line='- -compiler_flags "- -externs=${build.externs}/ga.js"' />
+            <arg line='- -compiler_flags "- -externs=${build.externs}/core.js"' />
+            -->
+            <arg line='--compiler_flags "--externs=${build.externs}/jquery.js"'/>
+            <!--<arg line='- -compiler_flags "- -externs=${build.externs}/facebook_all.js"'/>-->
+            <arg line='--compiler_flags "--compilation_level=ADVANCED_OPTIMIZATIONS"'/>
+            <!--
+            <arg line='- -compiler_flags "- -define=goog.userAgent.ASSUME_WEBKIT=true"' />
+            <arg line='- -compiler_flags "- -define=goog.userAgent.ASSUME_MOBILE_WEBKIT=true"' />
+            -->
+            <arg line='--compiler_flags "--version"'/>
+            <arg line='--compiler_flags "--warning_level=QUIET"'/>
+            <arg line='--compiler_flags "--jscomp_warning=checkTypes"'/>
+            <arg line='--compiler_flags "--jscomp_error=accessControls"'/>
+            <arg line='--compiler_flags "--jscomp_error=ambiguousFunctionDecl"'/>
+            <arg line='--compiler_flags "--jscomp_error=checkTypes"'/>
+            <arg line='--compiler_flags "--jscomp_error=constantProperty"'/>
+            <arg line='--compiler_flags "--jscomp_error=duplicateMessage"'/>
+            <arg line='--compiler_flags "--jscomp_error=globalThis"'/>
+            <arg line='--compiler_flags "--jscomp_error=invalidCasts"'/>
+            <arg line='--compiler_flags "--jscomp_error=missingProperties"'/>
+            <arg line='--compiler_flags "--jscomp_error=nonStandardJsDocs"'/>
+            <arg line='--compiler_flags "--jscomp_error=typeInvalidation"'/>
+            <arg line='--compiler_flags "--jscomp_error=undefinedNames"'/>
+            <arg line='--compiler_flags "--jscomp_error=unknownDefines"'/>
+            <arg line='--compiler_flags "--jscomp_error=uselessCode"'/>
+            <arg line='--compiler_flags "--jscomp_error=visibility"'/>
+        </exec>
+    </target>
+
+
+    <!-- ===================================================================
+             target: dist depends="init, compile, inject"
+     ==================================================================== -->
+    <target name="dist" depends="inject-canvas" description="archives the artifacts">
+        <tar destfile="${build.dist}/image.zoom.tar" basedir="${build.web}"/>
+        <gzip destfile="${build.dist}/image.zoom.tar.gz" src="${build.dist}/image.zoom.tar"/>
+        <delete file="${build.dist}/image.zoom.tar"/>
+        <delete dir="${build.src}"/>
+        <delete dir="${build.externs}"/>
+    </target>
+
+</project>
