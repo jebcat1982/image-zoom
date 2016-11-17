@@ -17,7 +17,7 @@ Run live compilation of Google Closure Library
 ```
 root/ >>> ./plovr.sh
 ```
-Open the app at http://localhost:8000/
+Open the app at ```http://localhost:8000/```
 
 ### Build Instructions
 ```
